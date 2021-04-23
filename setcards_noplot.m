@@ -8,7 +8,7 @@ glab = [-40,14];
 plab = [37,-37];
 colors = {'red','green','purple'};
 %load image
-img = imread('20210422_161504.jpg');
+img = imread('20210422_153420.jpg');
 
 imflat = rgb2lab(reshape(img,size(img,1)*size(img,2),size(img,3)));
 if max(imflat(:,1))<80
@@ -207,16 +207,33 @@ for ix = 1:length(cardStats)
         same = [strcmp(card1{1},card2{1}),strcmp(card1{2},card2{2}),strcmp(card1{3},card2{3}),strcmp(card1{4},card2{4})];
         different = ~same;
         
-        if sum(same)~=0
-            card3(same) = card1(same);
+        if different(1)
+            num3 = pnums(~strcmp(pnums,card1{1}) & ~strcmp(pnums,card2{1}));
+        else
+            num3 = card1{1};
         end
         
-        num3 = pnums(~strcmp(pnums,card1{1}) & ~strcmp(pnums,card2{1}));
-        color3 = pcolors(~strcmp(pcolors,card1{2}) & ~strcmp(pcolors,card2{2}));
-        inside3 = pinside(~strcmp(pinside,card1{3}) & ~strcmp(pinside,card2{3}));
-        shape3 = pshape(~strcmp(pshape,card1{4}) & ~strcmp(pshape,card2{4}));
-        alldiff = [num3,color3,inside3,shape3];
-        card3(different)=alldiff(different);
+        if different(2)
+            color3 = pcolors(~strcmp(pcolors,card1{2}) & ~strcmp(pcolors,card2{2}));
+        else
+            color3 = card1{2};
+        end
+        
+        if different(3)
+            inside3 = pinside(~strcmp(pinside,card1{3}) & ~strcmp(pinside,card2{3}));
+        else 
+            inside3 = card1{3};
+        end
+        
+        if different(4)
+            shape3 = pshape(~strcmp(pshape,card1{4}) & ~strcmp(pshape,card2{4}));
+        else
+            shape3 = card1{4};
+        end
+        
+        card3 = [num3,color3,inside3,shape3];
+        
+        
         
         for kx = oc2 %find if the third card is on the table
             
